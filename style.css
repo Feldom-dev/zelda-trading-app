@@ -1,339 +1,388 @@
+/* style.css */
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    box-sizing: border-box;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
 }
-
-#login-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 100%;
-    max-width: 400px;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-}
-
-#login-screen h2 {
-    color: #0056b3;
-    margin-bottom: 20px;
-}
-
-#password-input {
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-#login-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-#login-button:hover {
-    background-color: #0056b3;
-}
-
-#login-message {
-    margin-top: 15px;
-    color: red;
-    font-size: 0.9em;
-}
-
 
 #app-content {
+    max-width: 900px;
+    margin: 20px auto;
     background-color: #ffffff;
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-h1, h2 {
-    color: #0056b3;
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-/* Généralisation de .form-section pour les nouvelles sections */
-.form-section, .journal-section, .stats-section, #objective-tracking-section {
-    background-color: #e9ecef;
-    padding: 25px;
     border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.form-section h3, .objective-tracking-section h3 {
-    color: #0056b3;
-    margin-top: 0;
-    margin-bottom: 15px;
+h1, h2, h3 {
+    color: #2c3e50;
     text-align: center;
+    margin-bottom: 20px;
 }
 
-form label, .input-group label {
+h1 {
+    font-size: 2.2em;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.8em;
+    color: #007bff;
+}
+
+h3 {
+    font-size: 1.4em;
+    color: #34495e;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.form-section, .journal-section, .stats-section {
+    background-color: #fdfdfd;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
     color: #555;
 }
 
-form select, form input[type="number"], .input-group input[type="number"] {
-    width: calc(100% - 22px);
+input[type="text"],
+input[type="number"],
+input[type="password"],
+select {
+    width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     font-size: 1em;
-    background-color: #f8f9fa;
-    box-sizing: border-box;
 }
 
-form button, .action-button {
+button {
     background-color: #28a745;
     color: white;
-    padding: 12px 25px;
+    padding: 12px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1.1em;
     transition: background-color 0.3s ease;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    margin-top: 15px; /* Ajout d'une marge par défaut pour les boutons d'action */
+    display: block; /* Pour centrer le bouton ou lui donner sa propre ligne */
+    margin: 15px auto 0 auto; /* Pour centrer le bouton */
+    width: fit-content; /* S'adapte au contenu */
 }
 
-form button:hover, .action-button:hover {
+button:hover {
     background-color: #218838;
 }
 
-/* Styles spécifiques pour la nouvelle section */
-.objective-setup, .current-objective-status, .risk-lot-calculator, .objective-history {
-    background-color: #f8f9fa;
-    border: 1px solid #e2e6ea;
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+.action-button {
+    background-color: #007bff; /* Couleur différente pour les boutons d'action */
 }
 
-.current-objective-status p {
+.action-button:hover {
+    background-color: #0056b3;
+}
+
+.result-section {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #e9f7ef; /* Un fond plus clair pour les résultats */
+    border-left: 5px solid #28a745;
+    border-radius: 4px;
     font-size: 1.1em;
-    font-weight: bold;
-    color: #444;
-    margin-bottom: 10px;
-}
-
-.current-objective-status p span {
-    color: #007bff;
-}
-
-.progress-bar-container {
-    width: 100%;
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    height: 25px;
-    overflow: hidden;
-    margin-top: 10px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
-}
-
-.progress-bar {
-    height: 100%;
-    width: 0%; /* Initial width */
-    background-color: #28a745; /* Green */
-    border-radius: 5px;
+    color: #28a745;
     text-align: center;
-    line-height: 25px;
-    color: white;
-    transition: width 0.5s ease-in-out;
 }
 
-.small-text {
+/* Styles pour les descriptions H1 */
+.h1-desc {
+    background-color: #e9ecef;
+    border-left: 4px solid #6c757d;
+    padding: 10px;
+    margin-bottom: 15px;
     font-size: 0.9em;
-    color: #666;
-    margin-top: -10px;
-    margin-bottom: 10px;
+    color: #495057;
+    border-radius: 4px;
+}
+
+.h1-desc.hidden {
+    display: none;
+}
+
+.message {
     text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 .error-message {
     color: red;
     font-size: 0.9em;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.result-section {
-    margin-top: 25px;
-    padding: 20px;
-    border: 1px solid #cce5ff;
-    background-color: #e6f7ff;
-    border-radius: 8px;
-    text-align: center;
-    font-size: 1.1em;
-    line-height: 1.6;
-    color: #004085;
-}
-
-.result-section button {
-    background-color: #6c757d;
-    margin-top: 15px;
-    width: auto;
-    padding: 10px 20px;
-}
-
-.result-section button:hover {
-    background-color: #5a6268;
-}
-
-
-/* Styles pour les descriptions H1 */
-.h1-desc {
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-    border-radius: 5px;
-    padding: 10px;
+    margin-top: -10px;
     margin-bottom: 15px;
-    font-size: 0.9em;
-    color: #856404;
-}
-.h1-desc.hidden {
-    display: none;
+    text-align: center;
 }
 
-/* Conteneur pour rendre les tableaux scrollables horizontalement sur petits écrans */
+/* Styles pour le Login */
+#login-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #e9f7ef;
+}
+
+#login-screen h2 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+#login-screen input[type="password"] {
+    width: 280px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1.1em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#login-screen button {
+    width: 200px;
+    padding: 12px;
+    font-size: 1.2em;
+    background-color: #007bff;
+}
+
+#login-screen button:hover {
+    background-color: #0056b3;
+}
+
+/* Styles pour la section de suivi d'objectif */
+.objective-setup,
+.current-objective-status,
+.risk-lot-calculator,
+.objective-history {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #fdfdfd;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column; /* Stacks labels and inputs vertically on small screens */
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    margin-bottom: 5px;
+    flex-basis: 150px; /* Adjust as needed */
+}
+
+.input-group input[type="number"] {
+    flex-grow: 1;
+    margin-bottom: 0; /* Override default margin */
+}
+
+.small-text {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* TABLE STYLES */
 .table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow-x: auto; /* Makes table scrollable horizontally on small screens */
+    margin-top: 20px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #fdfdfe;
-    min-width: 600px;
-}
-
-table th, table td {
-    border: 1px solid #dee2e6;
-    padding: 12px;
-    text-align: left;
-    white-space: nowrap;
-}
-
-table th {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
+    margin-top: 15px;
     font-size: 0.9em;
 }
 
-table tr:nth-child(even) {
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px 8px; /* Adjusted padding for better fit on small screens */
+    text-align: left;
+}
+
+th {
     background-color: #f2f2f2;
-}
-
-.stats-section p {
-    font-size: 1.1em;
     font-weight: bold;
-    margin-bottom: 10px;
+    color: #333;
+    white-space: nowrap; /* Prevents wrapping in headers */
 }
 
-.stats-section p span {
-    color: #007bff;
+/* Responsive Table: Hide headers and use data-label for mobile */
+@media screen and (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        border: 1px solid #ccc;
+        margin-bottom: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+        flex: 1 1 100%; /* Make each cell take full width */
+        white-space: normal; /* Allow text to wrap */
+    }
+
+    td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #555;
+    }
+
+    /* Specific adjustments for date/time to fit better */
+    td[data-label="Date"], td[data-label="Heure"] {
+        flex: 1 1 50%; /* Allow two per row */
+        padding-left: 40%;
+    }
+
+    td[data-label="Date"]::before, td[data-label="Heure"]::before {
+        width: 35%;
+    }
+
+    /* Ensure action buttons are visible and styled */
+    td[data-label="Actions"] button {
+        margin: 5px 0; /* Add some margin around buttons */
+    }
 }
 
+
+/* Chart.js Container Styles */
 .chart-container {
-    width: 100%;
-    max-width: 600px; /* Limite la largeur du graphique */
-    margin: 20px auto;
-    background-color: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+    width: 100%; /* Full width of its parent */
+    height: 300px; /* Fixed height for consistency, adjust as needed */
+    margin: 20px 0;
 }
 
-/* MEDIA QUERIES pour la réactivité */
+/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
     body {
         padding: 10px;
     }
+
     #app-content {
         padding: 15px;
-        max-width: 100%;
+        margin: 10px auto;
     }
-    .form-section, .journal-section, .stats-section, #objective-tracking-section {
-        padding: 15px;
-    }
+
     h1 {
         font-size: 1.8em;
     }
+
     h2 {
-        font-size: 1.4em;
+        font-size: 1.5em;
     }
-    form select, form input[type="number"], form button, .input-group input[type="number"], .action-button {
-        width: 100%;
-        padding: 10px;
-        font-size: 0.95em;
+
+    h3 {
+        font-size: 1.2em;
     }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="password"],
+    select {
+        width: calc(100% - 10px); /* Adjust padding */
+        padding: 8px;
+    }
+
+    button {
+        padding: 10px 15px;
+        font-size: 1em;
+    }
+
+    .form-section, .journal-section, .stats-section {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
     .result-section {
         font-size: 1em;
-        padding: 15px;
+        padding: 10px;
     }
-    table {
-        min-width: unset;
+
+    /* Adjust for charts on smaller screens */
+    .chart-container {
+        height: 250px; /* Slightly smaller height on mobile */
+    }
+
+    /* Responsive adjustments for input groups */
+    .input-group {
+        flex-direction: column; /* Stack vertically */
+    }
+
+    .input-group label {
+        margin-bottom: 5px;
+    }
+
+    .input-group input[type="number"] {
         width: 100%;
-    }
-    table th, table td {
-        padding: 8px;
-        font-size: 0.8em;
-    }
-    .stats-section p {
-        font-size: 1em;
+        margin-bottom: 10px;
     }
 }
 
-/* Pour les très petits écrans (smartphones étroits) */
 @media (max-width: 480px) {
-    body {
-        padding: 5px;
-    }
-    #app-content {
-        padding: 10px;
-    }
     h1 {
         font-size: 1.6em;
     }
+
     h2 {
-        font-size: 1.2em;
+        font-size: 1.3em;
+    }
+
+    h3 {
+        font-size: 1.1em;
+    }
+
+    /* Further adjust chart height for very small screens */
+    .chart-container {
+        height: 200px;
     }
 }
