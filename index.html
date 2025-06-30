@@ -80,6 +80,69 @@
                 </div>
         </div>
 
+        <div id="objective-tracking-section" class="form-section">
+            <h2>📊 Suivi des Objectifs de Trade</h2>
+
+            <div class="objective-setup">
+                <h3>Définir/Mettre à jour l'Objectif Actuel</h3>
+                <div class="input-group">
+                    <label for="initial-capital">Capital de Départ ($) :</label>
+                    <input type="number" id="initial-capital" min="0.01" step="0.01" value="100">
+                </div>
+                <div class="input-group">
+                    <label for="final-objective">Objectif Final ($) :</label>
+                    <input type="number" id="final-objective" min="0.01" step="0.01" value="1000">
+                </div>
+                <button id="set-objective-button" class="action-button">Définir l'Objectif</button>
+            </div>
+
+            <div class="current-objective-status">
+                <h3>Statut de l'Objectif Actuel</h3>
+                <p>Capital Actuel : <span id="current-capital">$0.00</span></p>
+                <p>Progression : <span id="progress-percentage">0.00%</span></p>
+                <div class="chart-container">
+                    <canvas id="objectiveCapitalChart"></canvas>
+                </div>
+                <p class="small-text">Objectif : <span id="objective-summary">Non défini</span></p>
+            </div>
+
+            <div class="risk-lot-calculator">
+                <h3>Calculateur de Lot / Risque</h3>
+                <p class="small-text">Pour Jump 50 (lot min: 0.01)</p>
+                <div class="input-group">
+                    <label for="risk-percentage">Risque par Trade (%) :</label>
+                    <input type="number" id="risk-percentage" min="0.1" max="100" step="0.1" value="1">
+                </div>
+                <div class="input-group">
+                    <label for="stop-loss-pips">Stop Loss (points) :</label>
+                    <input type="number" id="stop-loss-pips" min="1" step="1" value="100">
+                </div>
+                <button id="calculate-lot-button" class="action-button">Calculer Lot</button>
+                <p>Lot à prendre : <span id="calculated-lot">0.00</span></p>
+                <p class="small-text" id="risk-amount-display">Risque en $ : $0.00</p>
+                <p class="error-message" id="lot-warning" style="display: none;">Le lot calculé est inférieur au lot minimum (0.01). Risquez moins ou réduisez le SL.</p>
+            </div>
+
+            <div class="objective-history">
+                <h3>Historique des Objectifs</h3>
+                <table id="history-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Début</th>
+                            <th>Fin</th>
+                            <th>Capital Initial</th>
+                            <th>Capital Final</th>
+                            <th>Résultat</th>
+                            <th>Actions</th> </tr>
+                    </thead>
+                    <tbody id="objective-history-body">
+                        </tbody>
+                </table>
+                <button id="add-previous-objective-button" class="action-button" style="margin-top: 15px;">Ajouter un Objectif Précédent</button>
+            </div>
+        </div>
+
         <div class="journal-section">
             <h2>Journal de Trading</h2>
             <div class="table-responsive">
@@ -90,13 +153,14 @@
                             <th>Heure</th>
                             <th>Scénario</th>
                             <th>Résultat</th>
-                            <th>Commentaires</th>
+                            <th>Gain/Perte</th> <th>Commentaires</th>
                         </tr>
                     </thead>
                     <tbody id="journal-table-body">
                         </tbody>
                 </table>
             </div>
+            <button id="export-journal-button" class="action-button" style="margin-top: 20px; background-color: #007bff;">Exporter le Journal (CSV)</button>
         </div>
 
         <div class="stats-section">
@@ -122,9 +186,18 @@
                         </tbody>
                 </table>
             </div>
+            <h3>Visualisation Graphique</h3>
+            <div class="chart-container">
+                <canvas id="winLossChart"></canvas>
+            </div>
+
+            <button id="reset-all-data-button" class="action-button" style="background-color: #dc3545; margin-top: 30px;">
+                Réinitialiser Toutes les Données (Journal, Objectifs, Stats)
+            </button>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

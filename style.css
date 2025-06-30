@@ -80,7 +80,8 @@ h1, h2 {
     margin-bottom: 25px;
 }
 
-.form-section, .journal-section, .stats-section {
+/* Généralisation de .form-section pour les nouvelles sections */
+.form-section, .journal-section, .stats-section, #objective-tracking-section {
     background-color: #e9ecef;
     padding: 25px;
     border-radius: 8px;
@@ -88,14 +89,21 @@ h1, h2 {
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
 }
 
-form label {
+.form-section h3, .objective-tracking-section h3 {
+    color: #0056b3;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+form label, .input-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
     color: #555;
 }
 
-form select, form input[type="number"] {
+form select, form input[type="number"], .input-group input[type="number"] {
     width: calc(100% - 22px);
     padding: 10px;
     margin-bottom: 15px;
@@ -106,7 +114,7 @@ form select, form input[type="number"] {
     box-sizing: border-box;
 }
 
-form button {
+form button, .action-button {
     background-color: #28a745;
     color: white;
     padding: 12px 25px;
@@ -118,10 +126,69 @@ form button {
     display: block;
     width: 100%;
     box-sizing: border-box;
+    margin-top: 15px; /* Ajout d'une marge par défaut pour les boutons d'action */
 }
 
-form button:hover {
+form button:hover, .action-button:hover {
     background-color: #218838;
+}
+
+/* Styles spécifiques pour la nouvelle section */
+.objective-setup, .current-objective-status, .risk-lot-calculator, .objective-history {
+    background-color: #f8f9fa;
+    border: 1px solid #e2e6ea;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.current-objective-status p {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.current-objective-status p span {
+    color: #007bff;
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    height: 25px;
+    overflow: hidden;
+    margin-top: 10px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%; /* Initial width */
+    background-color: #28a745; /* Green */
+    border-radius: 5px;
+    text-align: center;
+    line-height: 25px;
+    color: white;
+    transition: width 0.5s ease-in-out;
+}
+
+.small-text {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .result-section {
@@ -205,6 +272,16 @@ table tr:nth-child(even) {
     color: #007bff;
 }
 
+.chart-container {
+    width: 100%;
+    max-width: 600px; /* Limite la largeur du graphique */
+    margin: 20px auto;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 /* MEDIA QUERIES pour la réactivité */
 @media (max-width: 768px) {
     body {
@@ -214,7 +291,7 @@ table tr:nth-child(even) {
         padding: 15px;
         max-width: 100%;
     }
-    .form-section, .journal-section, .stats-section {
+    .form-section, .journal-section, .stats-section, #objective-tracking-section {
         padding: 15px;
     }
     h1 {
@@ -223,7 +300,7 @@ table tr:nth-child(even) {
     h2 {
         font-size: 1.4em;
     }
-    form select, form input[type="number"], form button {
+    form select, form input[type="number"], form button, .input-group input[type="number"], .action-button {
         width: 100%;
         padding: 10px;
         font-size: 0.95em;

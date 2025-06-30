@@ -25,11 +25,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const h1ConfigSelect = document.getElementById('h1-config');
     const h1DescElements = document.querySelectorAll('.h1-desc'); // Sélectionne toutes les descriptions
 
+    // --- Éléments pour le suivi d'objectif ---
+    const initialCapitalInput = document.getElementById('initial-capital');
+    const finalObjectiveInput = document.getElementById('final-objective');
+    const setObjectiveButton = document.getElementById('set-objective-button');
+    const currentCapitalSpan = document.getElementById('current-capital');
+    const progressPercentageSpan = document.getElementById('progress-percentage');
+    const objectiveSummarySpan = document.getElementById('objective-summary');
+
+    // Nouveau canvas pour le graphique de l'objectif
+    const objectiveCapitalChartCanvas = document.getElementById('objectiveCapitalChart');
+    let objectiveCapitalChartInstance = null; // Instance du graphique Chart.js pour l'objectif
+
+    const riskPercentageInput = document.getElementById('risk-percentage');
+    const stopLossPipsInput = document.getElementById('stop-loss-pips');
+    const calculateLotButton = document.getElementById('calculate-lot-button');
+    const calculatedLotDisplay = document.getElementById('calculated-lot');
+    const riskAmountDisplay = document.getElementById('risk-amount-display');
+    const lotWarning = document.getElementById('lot-warning');
+
+    const objectiveHistoryBody = document.getElementById('objective-history-body');
+    const addPreviousObjectiveButton = document.getElementById('add-previous-objective-button');
+
+    const exportJournalButton = document.getElementById('export-journal-button'); // Nouveau bouton d'exportation
+    const winLossChartCanvas = document.getElementById('winLossChart'); // Canvas pour le graphique
+    let winLossChartInstance = null; // Instance du graphique Chart.js
+
+    // Nouveau bouton de réinitialisation
+    const resetAllDataButton = document.getElementById('reset-all-data-button');
+
     // --- Configuration ---
     const MASTER_PASSWORD = 'Richeavenir000@'; // <<< TRÈS IMPORTANT : REMPLACEZ CECI PAR VOTRE VRAI MOT DE PASSE !!!
+    const JUMP50_PIP_VALUE = 10; // Valeur d'un point/pip pour 1 lot standard (1.0) sur Jump 50. (1 lot = 10$/pip)
+    const MIN_LOT_SIZE = 0.01; // Lot minimum pour Jump 50
 
     let currentAnalyzedScenario = null; // Variable pour stocker le scénario trouvé
     let trades = []; // Tableau pour stocker tous les trades
+    // Objectif avec un historique de son capital pour le graphique
+    let objective = {
+        id: null,
+        initialCapital: 0,
+        finalObjective: 0,
+        currentCapital: 0,
+        startDate: null,
+        capitalHistory: [] // Tableau pour stocker l'évolution du capital [{date: '...', capital: X}]
+    }; 
+    let objectiveHistory = []; // Tableau pour les objectifs passés
 
     // Définition des scénarios avec leurs descriptions détaillées
     // Les clés des 'conditions' DOIVENT correspondre EXACTEMENT aux attributs 'name' des <select> dans index.html
@@ -262,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loginScreen.style.display = 'none';
             appContent.style.display = 'block';
             localStorage.setItem('zeldaLoggedIn', 'true'); // Stocker l'état de connexion
-            loadTrades(); // Charger les données après connexion réussie
+            loadAllData(); // Charger toutes les données après connexion réussie
         } else {
             loginMessage.textContent = 'Mot de passe incorrect. Veuillez réessayer.';
             passwordInput.value = ''; // Effacer le champ du mot de passe
@@ -401,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Nouvelle fonction pour obtenir les libellés lisibles des clés de formulaire
+    // Fonction pour obtenir les libellés lisibles des clés de formulaire
     function getReadableLabel(key) {
         switch (key) {
             case 'h2Shape': return 'Forme H2';
@@ -437,6 +478,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    // --- Fonctions de Gestion du Journal ---
+
     // Fonction pour charger les trades depuis le localStorage
     const loadTrades = () => {
         const storedTrades = localStorage.getItem('tradingJournal');
@@ -458,11 +501,13 @@ document.addEventListener('DOMContentLoaded', () => {
         journalTableBody.innerHTML = '';
         trades.forEach(trade => {
             const row = journalTableBody.insertRow();
-            row.insertCell().textContent = trade.date;
-            row.insertCell().textContent = trade.time;
-            row.insertCell().textContent = trade.scenarioName;
+            // Ajout de data-label pour la responsivité
+            row.insertCell().setAttribute('data-label', 'Date'); row.cells[0].textContent = trade.date;
+            row.insertCell().setAttribute('data-label', 'Heure'); row.cells[1].textContent = trade.time;
+            row.insertCell().setAttribute('data-label', 'Scénario'); row.cells[2].textContent = trade.scenarioName;
             
             const resultCell = row.insertCell();
+            resultCell.setAttribute('data-label', 'Résultat');
             resultCell.textContent = trade.result;
             if (trade.result === 'TP') {
                 resultCell.style.color = 'green';
@@ -475,7 +520,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 resultCell.style.fontWeight = 'bold';
             }
 
-            row.insertCell().textContent = trade.comments;
+            const profitLossCell = row.insertCell();
+            profitLossCell.setAttribute('data-label', 'Gain/Perte');
+            profitLossCell.textContent = trade.profitLoss !== undefined ? `${trade.profitLoss.toFixed(2)}$` : 'N/A';
+            if (trade.profitLoss > 0) {
+                profitLossCell.style.color = 'green';
+                profitLossCell.style.fontWeight = 'bold';
+            } else if (trade.profitLoss < 0) {
+                profitLossCell.style.color = 'red';
+                profitLossCell.style.fontWeight = 'bold';
+            }
+
+            row.insertCell().setAttribute('data-label', 'Commentaires'); row.cells[5].textContent = trade.comments;
         });
         updateStats();
     };
@@ -492,6 +548,20 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Résultat invalide. Le trade n'a pas été ajouté. Choisissez TP, SL ou BE.");
             return;
         }
+        
+        let profitLoss = 0;
+        if (tradeResult.toUpperCase() === 'TP' || tradeResult.toUpperCase() === 'SL') {
+            const amountStr = prompt(`Entrez le montant ${tradeResult.toUpperCase() === 'TP' ? 'gagné' : 'perdu'} ($) :`, "0");
+            profitLoss = parseFloat(amountStr);
+            if (isNaN(profitLoss)) {
+                alert("Montant invalide. Le trade n'a pas été ajouté.");
+                return;
+            }
+            if (tradeResult.toUpperCase() === 'SL') {
+                profitLoss = -Math.abs(profitLoss); // Assurer que la perte est négative
+            }
+        }
+
         const comments = prompt("Ajoutez des commentaires (facultatif) :", "");
 
         const now = new Date();
@@ -502,17 +572,58 @@ document.addEventListener('DOMContentLoaded', () => {
             date: date,
             time: time,
             scenarioId: currentAnalyzedScenario.id,
-            scenarioName: currentAnalyzedScenario.name, // Correction ici
+            scenarioName: currentAnalyzedScenario.name,
             result: tradeResult.toUpperCase(),
+            profitLoss: profitLoss, // Ajout du gain/perte
             comments: comments || '',
-            // Sauvegarder l'heure de trade si elle était pertinente lors de l'analyse
             tradeHourContext: currentAnalyzedScenario.tradeHour || 'N/A' 
         };
 
         trades.push(newTrade);
         saveTrades();
+        
+        // Mettre à jour le capital actuel de l'objectif et son historique
+        if (objective && objective.id) { // Vérifie qu'un objectif est bien défini et actif
+            objective.currentCapital = parseFloat((objective.currentCapital + profitLoss).toFixed(2));
+            const nowForHistory = new Date();
+            objective.capitalHistory.push({
+                date: nowForHistory.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }),
+                capital: objective.currentCapital
+            });
+            saveObjectiveData(); // Sauvegarder l'objectif mis à jour
+        }
+        
         renderTrades();
+        renderObjectiveStatus(); // Mettre à jour l'affichage de l'objectif et le graphique
         alert("Trade ajouté au journal. N'oubliez pas d'évaluer la validation du H1 de Trade manuellement pour ce scénario anticipé.");
+    };
+
+    // Fonction pour exporter le journal en CSV
+    const exportJournalToCSV = () => {
+        let csvContent = "data:text/csv;charset=utf-8,";
+        // En-têtes
+        csvContent += "Date,Heure,Scénario,Résultat,Gain/Perte,Commentaires\n";
+
+        // Données
+        trades.forEach(trade => {
+            const row = [
+                `"${trade.date}"`,
+                `"${trade.time}"`,
+                `"${trade.scenarioName}"`,
+                `"${trade.result}"`, // Ajouter le résultat ici
+                `"${trade.profitLoss !== undefined ? trade.profitLoss.toFixed(2) : 'N/A'}"`,
+                `"${trade.comments.replace(/"/g, '""')}"` // Gérer les guillemets dans les commentaires
+            ].join(',');
+            csvContent += row + "\n";
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `journal_trading_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(link); // Requis pour Firefox
+        link.click();
+        document.body.removeChild(link);
     };
 
     // Fonction pour mettre à jour le tableau de bord statistique
@@ -532,7 +643,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 tp: 0,
                 sl: 0,
                 be: 0,
-                winRate: 0
+                winRate: 0,
+                totalProfitLoss: 0 // Pour les stats par scénario
             };
         });
 
@@ -555,6 +667,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (trade.result === 'BE') {
                     scenarioStats[trade.scenarioId].be++;
                 }
+                scenarioStats[trade.scenarioId].totalProfitLoss += trade.profitLoss || 0;
             }
         });
 
@@ -573,12 +686,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentWinRate = stats.trades > 0 ? ((stats.tp / stats.trades) * 100).toFixed(2) : '0.00';
 
             const row = statsTableBody.insertRow();
-            row.insertCell().textContent = stats.name;
-            row.insertCell().textContent = stats.trades;
-            row.insertCell().textContent = stats.tp;
-            row.insertCell().textContent = stats.sl;
-            row.insertCell().textContent = stats.be;
+            // Ajout de data-label pour la responsivité
+            row.insertCell().setAttribute('data-label', 'Scénario'); row.cells[0].textContent = stats.name;
+            row.insertCell().setAttribute('data-label', 'Trades'); row.cells[1].textContent = stats.trades;
+            row.insertCell().setAttribute('data-label', 'TP'); row.cells[2].textContent = stats.tp;
+            row.insertCell().setAttribute('data-label', 'SL'); row.cells[3].textContent = stats.sl;
+            row.insertCell().setAttribute('data-label', 'BE'); row.cells[4].textContent = stats.be;
             const winRateCell = row.insertCell();
+            winRateCell.setAttribute('data-label', 'Win Rate');
             winRateCell.textContent = `${currentWinRate}%`;
             
             if (currentWinRate >= 60 && stats.trades > 0) {
@@ -589,15 +704,413 @@ document.addEventListener('DOMContentLoaded', () => {
                 winRateCell.style.fontWeight = 'bold';
             }
         });
+
+        // Mettre à jour les graphiques globaux
+        updateGlobalWinLossChart();
     };
 
+
+    // --- Fonctions de Suivi d'Objectifs ---
+
+    // Charger les données d'objectif et d'historique depuis localStorage
+    const loadObjectiveData = () => {
+        const storedObjective = localStorage.getItem('currentObjective');
+        if (storedObjective) {
+            // S'assurer que le capitalHistory existe, sinon l'initialiser
+            objective = JSON.parse(storedObjective);
+            if (!objective.capitalHistory) {
+                objective.capitalHistory = [{ date: objective.startDate, capital: objective.initialCapital }];
+            }
+        } else {
+            // Initialiser un objectif par défaut si rien n'est stocké
+            objective = {
+                id: null,
+                initialCapital: 100,
+                finalObjective: 1000,
+                currentCapital: 100,
+                startDate: new Date().toLocaleDateString('fr-FR'),
+                capitalHistory: [{ date: new Date().toLocaleDateString('fr-FR'), capital: 100 }]
+            };
+        }
+
+        const storedObjectiveHistory = localStorage.getItem('objectiveHistory');
+        if (storedObjectiveHistory) {
+            objectiveHistory = JSON.parse(storedObjectiveHistory);
+        } else {
+            objectiveHistory = [];
+        }
+        renderObjectiveStatus();
+        renderObjectiveHistory();
+    };
+
+    // Sauvegarder les données d'objectif et d'historique dans localStorage
+    const saveObjectiveData = () => {
+        localStorage.setItem('currentObjective', JSON.stringify(objective));
+        localStorage.setItem('objectiveHistory', JSON.stringify(objectiveHistory));
+    };
+
+    // Mettre à jour l'affichage de l'objectif actuel et son graphique
+    const renderObjectiveStatus = () => {
+        if (objective && objective.id) {
+            currentCapitalSpan.textContent = `$${objective.currentCapital.toFixed(2)}`;
+            
+            const progress = (objective.currentCapital - objective.initialCapital) / (objective.finalObjective - objective.initialCapital);
+            const progressPercentage = Math.max(0, Math.min(100, progress * 100)).toFixed(2); // Clamp entre 0 et 100
+            progressPercentageSpan.textContent = `${progressPercentage}%`;
+
+            if (objective.currentCapital >= objective.finalObjective) {
+                objectiveSummarySpan.innerHTML = `Objectif atteint : ${objective.initialCapital}$ &rarr; ${objective.finalObjective}$`;
+            } else if (objective.currentCapital < objective.initialCapital) {
+                objectiveSummarySpan.innerHTML = `Objectif en cours : ${objective.initialCapital}$ &rarr; ${objective.finalObjective}$ <span style="color: red;">(sous le capital initial)</span>`;
+            } else {
+                objectiveSummarySpan.innerHTML = `Objectif en cours : ${objective.initialCapital}$ &rarr; ${objective.finalObjective}$`;
+            }
+
+            // Mettre à jour les inputs avec les valeurs de l'objectif actuel
+            initialCapitalInput.value = objective.initialCapital;
+            finalObjectiveInput.value = objective.finalObjective;
+            
+            updateObjectiveCapitalChart(); // Mettre à jour le graphique
+        } else {
+            // Si pas d'objectif en cours (ou réinitialisé)
+            currentCapitalSpan.textContent = '$0.00';
+            progressPercentageSpan.textContent = '0.00%';
+            objectiveSummarySpan.textContent = 'Non défini';
+            // Réinitialiser les inputs si pas d'objectif
+            initialCapitalInput.value = 100;
+            finalObjectiveInput.value = 1000;
+            
+            // Effacer le graphique si pas d'objectif
+            if (objectiveCapitalChartInstance) {
+                objectiveCapitalChartInstance.destroy();
+                objectiveCapitalChartInstance = null;
+            }
+        }
+        calculateLotAndRisk(); // Assure que le calculateur de lot se met à jour avec le bon capital
+    };
+
+    // Définir un nouvel objectif
+    const setObjective = () => {
+        const initial = parseFloat(initialCapitalInput.value);
+        const final = parseFloat(finalObjectiveInput.value);
+
+        if (isNaN(initial) || initial <= 0 || isNaN(final) || final <= 0) {
+            alert("Veuillez entrer des montants valides et positifs pour le capital.");
+            return;
+        }
+        if (final <= initial) {
+            alert("L'objectif final doit être supérieur au capital de départ.");
+            return;
+        }
+
+        // Si un objectif précédent existe et n'est pas "terminé", l'archiver
+        if (objective && objective.id) { // Vérifier si un objectif existait avant de le créer
+            const endDate = new Date().toLocaleDateString('fr-FR');
+            objectiveHistory.unshift({ // Ajouter au début pour les plus récents en haut
+                id: objective.id, // Garder l'ID de l'objectif archivé
+                startDate: objective.startDate,
+                endDate: endDate,
+                initialCapital: objective.initialCapital,
+                finalCapital: objective.currentCapital,
+                objectiveTarget: objective.finalObjective,
+                result: objective.currentCapital >= objective.finalObjective ? 'Atteint' : 'Non Atteint'
+            });
+        }
+
+        const newId = (objectiveHistory.length > 0 ? Math.max(...objectiveHistory.map(o => o.id)) : 0) + 1;
+
+        objective = {
+            id: newId, 
+            initialCapital: initial,
+            finalObjective: final,
+            currentCapital: initial, // Le capital actuel commence par le capital initial
+            startDate: new Date().toLocaleDateString('fr-FR'),
+            capitalHistory: [{ date: new Date().toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }), capital: initial }]
+        };
+        saveObjectiveData();
+        renderObjectiveStatus();
+        renderObjectiveHistory();
+        alert("Nouvel objectif défini !");
+    };
+
+    // Calculer le lot et le risque en $
+    const calculateLotAndRisk = () => {
+        const riskPercentage = parseFloat(riskPercentageInput.value);
+        const stopLossPips = parseFloat(stopLossPipsInput.value);
+
+        if (!objective || objective.currentCapital === undefined || objective.currentCapital <= 0) {
+            calculatedLotDisplay.textContent = 'N/A';
+            riskAmountDisplay.textContent = 'Risque en $ : N/A (Définissez un objectif avec capital)';
+            lotWarning.style.display = 'none';
+            return;
+        }
+
+        if (isNaN(riskPercentage) || riskPercentage <= 0 || isNaN(stopLossPips) || stopLossPips <= 0) {
+            calculatedLotDisplay.textContent = '0.00';
+            riskAmountDisplay.textContent = 'Risque en $ : $0.00';
+            lotWarning.style.display = 'none';
+            return;
+        }
+
+        // Calcul du montant risqué en $
+        const riskAmount = objective.currentCapital * (riskPercentage / 100);
+        riskAmountDisplay.textContent = `Risque en $ : $${riskAmount.toFixed(2)}`;
+
+        // Calcul du lot
+        // Formule: Lot = Montant Risqué / (SL en points * Valeur d'un point pour 1 lot standard)
+        // Pour Jump 50: 1 lot = 10$ par point. Donc JUMP50_PIP_VALUE = 10.
+        const calculatedLot = riskAmount / (stopLossPips * JUMP50_PIP_VALUE);
+        
+        // Arrondir au 2ème chiffre après la virgule (lot minimum 0.01)
+        let finalLot = parseFloat(calculatedLot.toFixed(2));
+        
+        // Assurer que le lot final est au moins le lot minimum
+        if (finalLot < MIN_LOT_SIZE && calculatedLot > 0) { // Si le calcul théorique est > 0 mais < MIN_LOT_SIZE
+            calculatedLotDisplay.textContent = MIN_LOT_SIZE.toFixed(2);
+            lotWarning.style.display = 'block';
+        } else if (finalLot === 0 && calculatedLot === 0) { // Si le risque est 0 ou SL est infini
+            calculatedLotDisplay.textContent = '0.00';
+            lotWarning.style.display = 'none';
+        } else {
+            calculatedLotDisplay.textContent = finalLot.toFixed(2);
+            lotWarning.style.display = 'none';
+        }
+    };
+
+    // Ajouter manuellement un objectif passé
+    const addPreviousObjective = () => {
+        const id = (objectiveHistory.length > 0 ? Math.max(...objectiveHistory.map(o => o.id)) : (objective && objective.id ? objective.id : 0)) + 1;
+        const startDate = prompt("Date de début (JJ/MM/AAAA) :", new Date().toLocaleDateString('fr-FR'));
+        const endDate = prompt("Date de fin (JJ/MM/AAAA) :", new Date().toLocaleDateString('fr-FR'));
+        const initial = parseFloat(prompt("Capital Initial ($) :", "100"));
+        const final = parseFloat(prompt("Capital Final ($) :", "100"));
+        const target = parseFloat(prompt("Objectif Cible ($) :", "1000"));
+
+        if (isNaN(initial) || isNaN(final) || isNaN(target) || initial < 0 || final < 0 || target < 0) {
+            alert("Valeurs invalides. Veuillez entrer des nombres valides.");
+            return;
+        }
+
+        const result = final >= target ? 'Atteint' : 'Non Atteint';
+
+        objectiveHistory.unshift({
+            id: id,
+            startDate: startDate,
+            endDate: endDate,
+            initialCapital: initial,
+            finalCapital: final,
+            objectiveTarget: target,
+            result: result
+        });
+        saveObjectiveData();
+        renderObjectiveHistory();
+    };
+
+    // Afficher l'historique des objectifs
+    const renderObjectiveHistory = () => {
+        objectiveHistoryBody.innerHTML = '';
+        objectiveHistory.forEach(obj => {
+            const row = objectiveHistoryBody.insertRow();
+            // Ajout de data-label pour la responsivité
+            row.insertCell().setAttribute('data-label', 'ID'); row.cells[0].textContent = obj.id;
+            row.insertCell().setAttribute('data-label', 'Début'); row.cells[1].textContent = obj.startDate;
+            row.insertCell().setAttribute('data-label', 'Fin'); row.cells[2].textContent = obj.endDate || 'En cours';
+            row.insertCell().setAttribute('data-label', 'Capital Initial'); row.cells[3].textContent = `$${obj.initialCapital.toFixed(2)}`;
+            row.insertCell().setAttribute('data-label', 'Capital Final'); row.cells[4].textContent = `$${obj.finalCapital.toFixed(2)}`;
+            const resultCell = row.insertCell();
+            resultCell.setAttribute('data-label', 'Résultat');
+            resultCell.textContent = obj.result;
+            resultCell.style.color = obj.result === 'Atteint' ? 'green' : 'red';
+            resultCell.style.fontWeight = 'bold';
+
+            const actionsCell = row.insertCell();
+            actionsCell.setAttribute('data-label', 'Actions');
+            // Optionnel: ajouter des boutons d'action (ex: supprimer)
+            // const deleteButton = document.createElement('button');
+            // deleteButton.textContent = 'X';
+            // deleteButton.onclick = () => deleteObjectiveFromHistory(obj.id);
+            // actionsCell.appendChild(deleteButton);
+        });
+    };
+
+    // --- Fonctions de Graphiques (Chart.js) ---
+
+    // Graphique pour l'évolution du capital de l'objectif en cours
+    const updateObjectiveCapitalChart = () => {
+        if (objectiveCapitalChartInstance) {
+            objectiveCapitalChartInstance.destroy();
+        }
+
+        if (!objective || !objective.capitalHistory || objective.capitalHistory.length === 0) {
+            // Masquer ou effacer le canvas si pas de données
+            const ctx = objectiveCapitalChartCanvas.getContext('2d');
+            ctx.clearRect(0, 0, objectiveCapitalChartCanvas.width, objectiveCapitalChartCanvas.height);
+            return;
+        }
+
+        const labels = objective.capitalHistory.map(entry => entry.date);
+        const data = objective.capitalHistory.map(entry => entry.capital);
+
+        const ctx = objectiveCapitalChartCanvas.getContext('2d');
+        objectiveCapitalChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Évolution du Capital',
+                    data: data,
+                    borderColor: '#007bff', // Couleur bleue pour le capital
+                    tension: 0.2,
+                    fill: false,
+                    pointRadius: 3
+                },
+                {
+                    label: 'Objectif Final',
+                    data: Array(labels.length).fill(objective.finalObjective),
+                    borderColor: 'rgb(255, 99, 132)', // Rouge pour l'objectif
+                    borderDash: [5, 5], // Ligne pointillée
+                    tension: 0,
+                    fill: false,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Évolution du Capital Actuel de l\'Objectif'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: $${context.parsed.y.toFixed(2)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date et Heure'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Capital ($)'
+                        },
+                        beginAtZero: false // Peut commencer ailleurs que zéro si le capital est élevé
+                    }
+                }
+            }
+        });
+    };
+
+    // Graphique pour les statistiques globales de gain/perte
+    const updateGlobalWinLossChart = () => {
+        if (winLossChartInstance) {
+            winLossChartInstance.destroy(); // Détruire l'instance précédente
+        }
+
+        const labels = [];
+        const data = [];
+        let cumulativeProfitLoss = 0;
+
+        trades.forEach(trade => {
+            const dateTime = `${trade.date} ${trade.time}`;
+            labels.push(dateTime);
+            cumulativeProfitLoss += trade.profitLoss || 0;
+            data.push(cumulativeProfitLoss);
+        });
+
+        const ctx = winLossChartCanvas.getContext('2d');
+        winLossChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Évolution du Capital (cumulé)',
+                    data: data,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Permet au graphique de s'adapter au conteneur
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Évolution Cumulée des Gains/Pertes (Journal Global)'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date et Heure'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Gain/Perte Cumulé ($)'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    };
+
+    // --- Fonction de Réinitialisation Globale ---
+    const resetAllData = () => {
+        if (confirm("Êtes-vous sûr de vouloir réinitialiser TOUTES les données (journal, objectifs, historique) ? Cette action est irréversible.")) {
+            // Réinitialiser les variables globales
+            trades = [];
+            objective = { // Réinitialiser à un état initial propre
+                id: null,
+                initialCapital: 100,
+                finalObjective: 1000,
+                currentCapital: 100,
+                startDate: new Date().toLocaleDateString('fr-FR'),
+                capitalHistory: [{ date: new Date().toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }), capital: 100 }]
+            };
+            objectiveHistory = [];
+
+            // Supprimer les données du localStorage
+            localStorage.removeItem('tradingJournal');
+            localStorage.removeItem('currentObjective');
+            localStorage.removeItem('objectiveHistory');
+
+            // Mettre à jour l'affichage
+            renderTrades(); // Va aussi appeler updateGlobalWinLossChart() via updateStats()
+            renderObjectiveStatus(); // Va aussi appeler updateObjectiveCapitalChart()
+            renderObjectiveHistory();
+
+            alert("Toutes les données ont été réinitialisées.");
+        }
+    };
+
+
     // --- Initialisation et Écouteurs d'Événements ---
+
+    // Fonction de chargement de toutes les données
+    const loadAllData = () => {
+        loadTrades(); // Charge les trades et met à jour les stats et graphiques globaux
+        loadObjectiveData(); // Charge les données d'objectifs et met à jour son graphique
+    };
+
 
     // Gère l'affichage initial (login ou app)
     if (localStorage.getItem('zeldaLoggedIn') === 'true') {
         loginScreen.style.display = 'none';
         appContent.style.display = 'block';
-        loadTrades(); // Charger les données si déjà connecté
+        loadAllData(); // Charger toutes les données si déjà connecté
     } else {
         loginScreen.style.display = 'flex'; // Afficher l'écran de login
         appContent.style.display = 'none'; // Masquer l'application
@@ -619,6 +1132,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Attacher l'écouteur d'événement au bouton d'analyse
     analyzeButton.addEventListener('click', analyzeMarket);
 
+    // Attacher les écouteurs pour le suivi d'objectifs
+    setObjectiveButton.addEventListener('click', setObjective);
+    calculateLotButton.addEventListener('click', calculateLotAndRisk);
+    // Recalculer le lot/risque dès que les inputs changent
+    riskPercentageInput.addEventListener('input', calculateLotAndRisk);
+    stopLossPipsInput.addEventListener('input', calculateLotAndRisk);
+    // Recalculer le lot si le capital de l'objectif change (utile si l'utilisateur modifie directement les champs)
+    initialCapitalInput.addEventListener('change', calculateLotAndRisk);
+    finalObjectiveInput.addEventListener('change', calculateLotAndRisk);
+
+    addPreviousObjectiveButton.addEventListener('click', addPreviousObjective);
+    exportJournalButton.addEventListener('click', exportJournalToCSV); // Écouteur pour le bouton d'exportation
+    resetAllDataButton.addEventListener('click', resetAllData); // Écouteur pour le bouton de réinitialisation
+
+
     // Afficher la description initiale si une option est déjà sélectionnée au chargement
     displayH1Description();
+
+    // Le calcul de lot est maintenant appelé par renderObjectiveStatus() au chargement
+    // pour s'assurer que le capital actuel est pris en compte.
 });
