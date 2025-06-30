@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zelda - Tableau de Bord de Trading</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-container">
+            <h2>Accès à l'Outil Zelda</h2>
+            <div class="form-group">
+                <label for="password-input">Mot de passe :</label>
+                <input type="password" id="password-input" placeholder="Entrez votre mot de passe">
+            </div>
+            <button id="login-button">Se Connecter</button>
+            <p id="login-message"></p>
+        </div>
+    </div>
+
+    <div id="app-content">
+        <header>
+            <h1>Zelda - Tableau de Bord de Trading</h1>
+        </header>
+
+        <main>
+            <section id="analysis-section">
+                <h2>1. Analyseur d'Opportunité</h2>
+                <form id="analysis-form">
+                    <div class="form-group">
+                        <label for="trade-hour">Heure de Trade :</label>
+                        <select id="trade-hour" name="tradeHour">
+                            <option value="">-- Choisissez --</option>
+                            <option value="3">03:00</option>
+                            <option value="7">07:00</option>
+                            <option value="9">09:00</option>
+                            <option value="15">15:00</option>
+                            <option value="21">21:00</option>
+                            <option value="23">23:00</option>
+                        </select>
+                    </div>
+
+                    <fieldset>
+                        <legend>Analyse HTF (H2)</legend>
+                        <div class="form-group">
+                            <label for="h2-shape">Forme Bougie H2 :</label>
+                            <select id="h2-shape" name="h2Shape">
+                                <option value="">-- Choisissez --</option>
+                                <option value="pleine-haussiere">Pleine Haussière</option>
+                                <option value="pleine-baissiere">Pleine Baissière</option>
+                                <option value="algo-valide">Algo Valide</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="h2-composition">Composition H2 :</label>
+                            <select id="h2-composition" name="h2Composition">
+                                 <option value="">-- Choisissez --</option>
+                                 <option value="h1-2-algo">Dernière H1 est Algo</option>
+                                 <option value="h1-1-2-algo">Les deux H1 sont Algo</option>
+                                 <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Analyse Signal (H1 Avant Trade)</legend>
+                         <div class="form-group">
+                            <label for="h1-config">Configuration H1 (Avant Trade) :</label>
+                            <select id="h1-config" name="h1ConfigBefore">
+                                <option value="">-- Choisissez --</option>
+                                <option value="A">Cas A</option>
+                                <option value="C">Cas C</option>
+                                <option value="D">Cas D</option>
+                                <option value="E">Cas E</option>
+                            </select>
+                            <p id="desc-A" class="h1-desc hidden">A/ H1 = Pleine Baissière (M30 A pleine baissière et M30 B pleine baissière) : **Opportunité de continuité de la baisse.**</p>
+                            <p id="desc-C" class="h1-desc hidden">C/ H1 = Indécise (M30 A indécise et M30 B indécise) : **Opportunité d'inversion potentielle ou de consolidation.**</p>
+                            <p id="desc-D" class="h1-desc hidden">D/ H1 = Pleine Haussière (M30 A pleine haussière et M30 B pleine haussière) : **Opportunité de continuité de la hausse.**</p>
+                            <p id="desc-E" class="h1-desc hidden">E/ H1 = Longue Mèche/Corps (M30 A longue mèche et M30 B corps) : **Opportunité de faiblesse ou de force selon le sens.**</p>
+                        </div>
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>Filtre RSI</legend>
+                        <div class="form-group">
+                            <label for="rsi-status">État du RSI :</label>
+                            <select id="rsi-status" name="rsiStatus">
+                                <option value="">-- Choisissez --</option>
+                                <option value="haussiere">Tendance Haussière</option>
+                                <option value="baissiere">Tendance Baissière</option>
+                                <option value="surachat">Surachat</option>
+                                <option value="survente">Survente</option>
+                            </select>
+                        </div>
+                    </fieldset>
+                    
+                    <button type="button" id="analyze-button">Analyser</button>
+                </form>
+                
+                <div id="result-container">
+                    <h3>Résultat :</h3>
+                    <div id="result-display">
+                        [ En attente d'analyse... ]
+                    </div>
+                </div>
+            </section>
+
+            <section id="dashboard-section">
+                <h2>2. Tableau de Bord Statistique</h2>
+                <p class="global-stats"><strong>Win Rate Global : <span id="global-win-rate">0.00%</span></strong></p>
+                <p class="global-stats">Total Trades: <span id="total-trades">0</span> | TP: <span id="total-tp">0</span> | SL: <span id="total-sl">0</span> | BE: <span id="total-be">0</span></p>
+
+                <h3>Performance par Scénario</h3>
+                <table id="stats-table">
+                    <thead>
+                        <tr>
+                            <th>Scénario</th>
+                            <th>Trades</th>
+                            <th>TP</th>
+                            <th>SL</th>
+                            <th>BE</th>
+                            <th>Win Rate (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stats-table-body">
+                        </tbody>
+                </table>
+            </section>
+
+            <section id="journal-section">
+                <h2>3. Journal de Trading</h2>
+                <table id="journal-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Heure</th>
+                            <th>Scénario</th>
+                            <th>Résultat</th>
+                            <th>Commentaires</th>
+                        </tr>
+                    </thead>
+                    <tbody id="journal-table-body">
+                        </tbody>
+                </table>
+            </section>
+        </main>
+
+        <footer>
+            <p>Outil de Trading Zelda - © 2025</p>
+        </footer>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
