@@ -127,6 +127,22 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'Opportunité de renversement haussier.',
             detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Les deux H1 sont Algo / **H1 AVANT TRADE: Cas E** (M30 A algo et M30 B algo) / RSI: Survente. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé sur la mèche du bas de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
         },
+        // NOUVEAU SCENARIO BUY 7
+        {
+            id: 'B7',
+            type: 'BUY',
+            conditions: {
+                'h2Shape': 'pleine-baissiere', // H2 clôture en pleine baissière
+                'h2Composition': 'h1-2-algo', // H1 (la deuxième bougie de H2) algo
+                'h1ConfigBefore': 'E', // h1 = algo (M30 A algo et M30 B algo)
+                'rsiStatus': 'survente' // RSI en survente
+            },
+            name: 'Buy - H2 PB + H1 Algo (2e) + H1 Av.Trade E (Renversement Haussier)',
+            expectedH1Trade: 'Naissance directe d\'opportunité',
+            description: 'Opportunité de renversement haussier.',
+            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas E** (M30 A algo et M30 B algo) / RSI: Survente. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé sur la mèche du bas de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
+        },
+
 
         // --- SCENARIOS SELL ---
 
@@ -138,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'pleine-baissiere',
                 'h2Composition': 'h1-2-algo', // H1 (la deuxième bougie de H2) algo
                 'h1ConfigBefore': 'A', // h1 = pleine baissière (M30 A pleine baissière et M30 B pleine baissière)
+                'rsiStatus': 'baissiere'
             },
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade A',
             expectedH1Trade: 'H1 heure de trade clôture en Algo (M30A algo et M30B algo)',
@@ -152,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'pleine-baissiere',
                 'h2Composition': 'h1-2-algo', // H1 (la deuxième bougie de H2) algo
                 'h1ConfigBefore': 'C', // h1 = pleine baissière (M30 A pleine baissière et M30 B algo)
+                'rsiStatus': 'baissiere'
             },
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade C',
             expectedH1Trade: 'Naissance directe d\'opportunité',
@@ -166,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'pleine-baissiere',
                 'h2Composition': 'h1-2-algo', // H1 (la deuxième bougie de H2) algo
                 'h1ConfigBefore': 'D', // h1 = pleine baissière (M30 A algo et M30 B algo)
+                'rsiStatus': 'baissiere'
             },
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade D',
             expectedH1Trade: 'Naissance directe d\'opportunité',
@@ -180,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'pleine-baissiere',
                 'h2Composition': 'h1-2-algo', // H1 (la deuxième bougie de H2) algo
                 'h1ConfigBefore': 'E', // h1 = algo (M30 A algo et M30 B algo)
+                'rsiStatus': 'baissiere'
             },
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
@@ -194,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'algo-valide', // h2 clôture en algo
                 'h2Composition': 'h1-2-algo', // sa dernière bougie h1 soit aussi une bougie algo
                 'h1ConfigBefore': 'E', // h1 = algo (M30 A algo et M30 B algo)
+                'rsiStatus': 'surachat' // RSI en surachat
             },
             name: 'Sell - H2 Algo + Dernière H1 Algo + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
@@ -208,11 +229,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'pleine-baissiere',
                 'h2Composition': 'h1-1-2-algo', // ses deux bougies h1 clôturent en algo
                 'h1ConfigBefore': 'E', // h1 = algo (M30 A algo et M30 B algo)
+                'rsiStatus': 'surachat' // RSI en surachat
             },
             name: 'Sell - H2 PB + Deux H1 Algo + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de renversement baissier.',
             detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Les deux H1 sont Algo / **H1 AVANT TRADE: Cas E** (M30 A algo et M30 B algo) / RSI: Surachat. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé sur la mèche du haut de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
+        },
+        // NOUVEAU SCENARIO SELL 7
+        {
+            id: 'S7',
+            type: 'SELL',
+            conditions: {
+                'h2Shape': 'pleine-haussiere', // H2 clôture en pleine haussière
+                'h2Composition': 'h1-2-algo', // H1 (la deuxième bougie de H2) algo
+                'h1ConfigBefore': 'E', // h1 = algo (M30 A algo et M30 B algo)
+                'rsiStatus': 'surachat' // RSI en surachat
+            },
+            name: 'Sell - H2 PH + H1 Algo (2e) + H1 Av.Trade E (Renversement Baissier)',
+            expectedH1Trade: 'Naissance directe d\'opportunité',
+            description: 'Opportunité de renversement baissier.',
+            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas E** (M30 A algo et M30 B algo) / RSI: Surachat. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé sur la mèche du haut de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
         }
     ];
 
@@ -256,21 +293,19 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let [name, value] of formData.entries()) {
             if (name === 'tradeHour') {
                 tradeHour = value; // Stocke l'heure séparément
-                if (value === "") { // Vérifie si l'heure est sélectionnée (si ce n'est pas optionnel)
-                    allFieldsSelected = false; // Désactivez si l'heure est obligatoire et non sélectionnée
-                }
+                // Si 'tradeHour' est optionnel, on ne le vérifie pas pour allFieldsSelected
             } else if (value === "") { // Vérifie les autres champs obligatoires
                 allFieldsSelected = false;
                 break;
             }
-            // N'ajoute au currentConditions que les champs qui sont des VRAIES conditions
+            // N'ajoute au currentConditions que les champs qui sont des VRAIES conditions pour les scénarios
             if (name !== 'tradeHour') {
                 currentConditions[name] = value;
             }
         }
 
         if (!allFieldsSelected) {
-            resultDisplay.innerHTML = '<span style="color: orange;">Veuillez remplir tous les champs pour l\'analyse.</span>';
+            resultDisplay.innerHTML = '<span style="color: orange;">Veuillez remplir tous les champs obligatoires pour l\'analyse.</span>';
             currentAnalyzedScenario = null;
             return;
         }
@@ -302,31 +337,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 let currentMatches = 0;
                 let tempSuggestion = [];
 
-                if (currentConditions.h2Shape === scenario.conditions.h2Shape) {
-                    currentMatches++;
-                } else if (currentConditions.h2Shape) { // Suggestion si H2 est rentré mais ne matche pas
-                    tempSuggestion.push(`Forme H2 attendue: **${getReadableValue(scenario.conditions.h2Shape)}**`);
+                const conditionsKeys = Object.keys(scenario.conditions);
+                for (const key of conditionsKeys) {
+                    if (scenario.conditions[key] === currentConditions[key]) {
+                        currentMatches++;
+                    } else if (currentConditions[key]) { // Si la condition actuelle est présente mais ne matche pas
+                        // Affiche la condition attendue par le SCENARIO, PAS la valeur entrée par l'utilisateur
+                        tempSuggestion.push(`${getReadableLabel(key)} attendue: **${getReadableValue(scenario.conditions[key])}**`);
+                    }
                 }
 
-                if (currentConditions.h2Composition === scenario.conditions.h2Composition) {
-                    currentMatches++;
-                } else if (currentConditions.h2Composition) { // Suggestion si H2 Comp est rentré mais ne matche pas
-                    tempSuggestion.push(`Composition H2 attendue: **${getReadableValue(scenario.conditions.h2Composition)}**`);
-                }
-
-                if (currentConditions.h1ConfigBefore === scenario.conditions.h1ConfigBefore) {
-                    currentMatches++;
-                } else if (currentConditions.h1ConfigBefore) { // Suggestion si H1 Av.Trade est rentré mais ne matche pas
-                    tempSuggestion.push(`Configuration H1 Avant Trade attendue: **${getReadableValue(scenario.conditions.h1ConfigBefore)}**`);
-                }
-
-                if (currentConditions.rsiStatus === scenario.conditions.rsiStatus) {
-                    currentMatches++;
-                } else if (currentConditions.rsiStatus) { // Suggestion si RSI est rentré mais ne matche pas
-                    tempSuggestion.push(`Statut RSI attendu: **${getReadableValue(scenario.conditions.rsiStatus)}**`);
-                }
-
-                // Pour ne pas surcharger, on ne garde que les scénarios avec le plus de correspondances
                 if (currentMatches > 0 && currentMatches >= maxMatches) {
                     if (currentMatches > maxMatches) {
                         closestScenarios = []; // Réinitialise si un meilleur match est trouvé
@@ -342,13 +362,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (closestScenarios.length > 0) {
                 suggestionMessage += '<br><br><span style="color: #666; font-size: 0.9em;">Suggestions basées sur vos entrées :<br>';
                 closestScenarios.forEach(item => {
-                    const scenarioType = item.scenario.type;
+                    // Ces valeurs sont celles DÉFINIES dans le scénario suggéré, pas forcément celles de l'utilisateur
                     const h2Shape = getReadableValue(item.scenario.conditions.h2Shape);
                     const h2Composition = getReadableValue(item.scenario.conditions.h2Composition);
                     const h1Config = getReadableValue(item.scenario.conditions.h1ConfigBefore);
                     const rsiStatus = getReadableValue(item.scenario.conditions.rsiStatus);
 
-                    suggestionMessage += `Pour un ${scenarioType} (Type: ${item.scenario.name}) :<br>`;
+                    suggestionMessage += `Pour un ${item.scenario.type} (Scénario ID: **${item.scenario.id}** - ${item.scenario.name}) :<br>`;
                     suggestionMessage += `- Forme H2: **${h2Shape}** | Comp. H2: **${h2Composition}** | H1 Av.Trade: **${h1Config}** | RSI: **${rsiStatus}**<br>`;
                     if (item.suggestions.length > 0) {
                         suggestionMessage += `   (Vos entrées ne correspondent pas sur: ${item.suggestions.join(', ')})<br>`;
@@ -381,26 +401,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Aide pour rendre les valeurs plus lisibles pour les suggestions et descriptions des H1
+    // Nouvelle fonction pour obtenir les libellés lisibles des clés de formulaire
+    function getReadableLabel(key) {
+        switch (key) {
+            case 'h2Shape': return 'Forme H2';
+            case 'h2Composition': return 'Composition H2';
+            case 'h1ConfigBefore': return 'Configuration H1 Avant Trade';
+            case 'rsiStatus': return 'Statut RSI';
+            default: return key;
+        }
+    }
+
+    // Fonction pour rendre les valeurs des sélecteurs plus lisibles
     function getReadableValue(value) {
         switch (value) {
             case 'pleine-haussiere': return 'Pleine Haussière';
             case 'pleine-baissiere': return 'Pleine Baissière';
             case 'algo-valide': return 'Algo Valide';
-            case 'algo-invalide': return 'Algo Invalide'; // Ajouté si applicable dans le futur
-            case 'indecise': return 'Indécise'; // Ajouté si applicable dans le futur
+            case 'algo-invalide': return 'Algo Invalide';
+            case 'indecise': return 'Indécise';
             case 'h1-2-algo': return 'Dernière H1 est Algo';
             case 'h1-1-2-algo': return 'Les deux H1 sont Algo';
             case 'autre': return 'Autre Composition';
-            case 'A': return 'Cas A (M30 A pleine haussière/baissière et M30 B pleine haussière/baissière)';
-            case 'C': return 'Cas C (M30 A pleine haussière/baissière et M30 B algo)';
-            case 'D': return 'Cas D (M30 A algo et M30 B algo)';
-            case 'E': return 'Cas E (M30 A algo et M30 B algo)';
+            case 'A': return 'Cas A';
+            case 'C': return 'Cas C';
+            case 'D': return 'Cas D';
+            case 'E': return 'Cas E';
             case 'haussiere': return 'Tendance Haussière';
             case 'baissiere': return 'Tendance Baissière';
             case 'surachat': return 'Surachat';
             case 'survente': return 'Survente';
-            case 'neutre': return 'Neutre'; // Ajouté si applicable dans le futur
+            case 'neutre': return 'Neutre';
             default: return value;
         }
     }
@@ -471,11 +502,11 @@ document.addEventListener('DOMContentLoaded', () => {
             date: date,
             time: time,
             scenarioId: currentAnalyzedScenario.id,
-            scenarioName: currentAnalyzedScenario.name,
+            scenarioName: currentAnalyzedScenario.name, // Correction ici
             result: tradeResult.toUpperCase(),
             comments: comments || '',
             // Sauvegarder l'heure de trade si elle était pertinente lors de l'analyse
-            tradeHourContext: currentAnalyyzedScenario.tradeHour || 'N/A' 
+            tradeHourContext: currentAnalyzedScenario.tradeHour || 'N/A' 
         };
 
         trades.push(newTrade);
@@ -577,6 +608,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Permettre la connexion avec la touche Entrée
     passwordInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
+            e.preventDefault(); // Empêche le comportement par défaut (soumission du formulaire)
             handleLogin();
         }
     });

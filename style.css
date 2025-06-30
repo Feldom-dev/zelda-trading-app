@@ -6,8 +6,8 @@ body {
     padding: 20px;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Aligner en haut pour éviter le centrage vertical forcé */
-    min-height: 100vh; /* Minimum height pour couvrir la fenêtre */
+    align-items: flex-start;
+    min-height: 100vh;
     box-sizing: border-box;
 }
 
@@ -23,7 +23,7 @@ body {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box; /* Assurer que padding et border sont inclus dans la largeur/hauteur */
+    box-sizing: border-box;
 }
 
 #login-screen h2 {
@@ -31,7 +31,7 @@ body {
     margin-bottom: 20px;
 }
 
-#password-input { /* J'ai corrigé l'id ici, c'était #login-input avant */
+#password-input {
     padding: 10px 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -69,7 +69,7 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    max-width: 900px; /* Largeur maximale pour l'application */
+    max-width: 900px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -96,14 +96,14 @@ form label {
 }
 
 form select, form input[type="number"] {
-    width: calc(100% - 22px); /* Moins le padding et la bordure */
+    width: calc(100% - 22px);
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ced4da;
     border-radius: 5px;
     font-size: 1em;
     background-color: #f8f9fa;
-    box-sizing: border-box; /* Important pour le responsive */
+    box-sizing: border-box;
 }
 
 form button {
@@ -115,7 +115,7 @@ form button {
     cursor: pointer;
     font-size: 1.1em;
     transition: background-color 0.3s ease;
-    display: block; /* Pour centrer le bouton si besoin ou prendre toute la largeur */
+    display: block;
     width: 100%;
     box-sizing: border-box;
 }
@@ -139,7 +139,7 @@ form button:hover {
 .result-section button {
     background-color: #6c757d;
     margin-top: 15px;
-    width: auto; /* Bouton spécifique au résultat, pas pleine largeur */
+    width: auto;
     padding: 10px 20px;
 }
 
@@ -150,7 +150,7 @@ form button:hover {
 
 /* Styles pour les descriptions H1 */
 .h1-desc {
-    background-color: #fff3cd; /* Couleur jaune clair pour les infos */
+    background-color: #fff3cd;
     border: 1px solid #ffeeba;
     border-radius: 5px;
     padding: 10px;
@@ -164,23 +164,23 @@ form button:hover {
 
 /* Conteneur pour rendre les tableaux scrollables horizontalement sur petits écrans */
 .table-responsive {
-    overflow-x: auto; /* Permet le défilement horizontal si le contenu dépasse */
-    -webkit-overflow-scrolling: touch; /* Améliore le défilement sur iOS */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 table {
-    width: 100%; /* S'assure que le tableau prend la largeur disponible de son conteneur */
+    width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     background-color: #fdfdfe;
-    min-width: 600px; /* Définir une largeur minimale pour éviter que le tableau ne soit trop écrasé */
+    min-width: 600px;
 }
 
 table th, table td {
     border: 1px solid #dee2e6;
     padding: 12px;
     text-align: left;
-    white-space: nowrap; /* Empêche le texte de s'enrouler dans les cellules du tableau */
+    white-space: nowrap;
 }
 
 table th {
@@ -212,37 +212,36 @@ table tr:nth-child(even) {
     }
     #app-content {
         padding: 15px;
-        /* Supprime la max-width pour que l'application prenne toute la largeur disponible sur mobile */
         max-width: 100%;
     }
     .form-section, .journal-section, .stats-section {
-        padding: 15px; /* Réduire le padding des sections sur mobile */
+        padding: 15px;
     }
     h1 {
-        font-size: 1.8em; /* Ajuster la taille du titre principal */
+        font-size: 1.8em;
     }
     h2 {
-        font-size: 1.4em; /* Ajuster la taille des sous-titres */
+        font-size: 1.4em;
     }
     form select, form input[type="number"], form button {
-        width: 100%; /* S'assurer qu'ils prennent toute la largeur */
-        padding: 10px; /* Ajuster le padding */
-        font-size: 0.95em; /* Légèrement réduire la taille de police */
+        width: 100%;
+        padding: 10px;
+        font-size: 0.95em;
     }
     .result-section {
-        font-size: 1em; /* Ajuster la taille de police du résultat */
+        font-size: 1em;
         padding: 15px;
     }
     table {
-        min-width: unset; /* Supprime la largeur minimale du tableau pour qu'il s'adapte au défilement */
-        width: 100%; /* S'assure qu'il prend 100% de la largeur du conteneur scrollable */
+        min-width: unset;
+        width: 100%;
     }
     table th, table td {
-        padding: 8px; /* Réduire le padding des cellules */
-        font-size: 0.8em; /* Réduire la taille de police des cellules */
+        padding: 8px;
+        font-size: 0.8em;
     }
     .stats-section p {
-        font-size: 1em; /* Ajuster la taille des statistiques globales */
+        font-size: 1em;
     }
 }
 
@@ -260,5 +259,4 @@ table tr:nth-child(even) {
     h2 {
         font-size: 1.2em;
     }
-    /* Les styles de tableau restent gérés par .table-responsive */
 }
