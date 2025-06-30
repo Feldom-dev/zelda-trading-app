@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Buy - H2 PH + H1 Algo (2e) + H1 Av.Trade A',
             expectedH1Trade: 'H1 heure de trade clôture en Algo (M30A algo et M30B algo)',
             description: 'Opportunité de continuité de la hausse.',
-            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas A** / RSI: Haussière. **ATTENTION : Pas d\'opportunité directe.** Attendez que le H1 de Trade clôture en Algo (M30A algo et M30B algo). Un **Buy Limit** est placé sur la mèche du bas de la bougie H1 de Trade ayant clôturé en Algo.'
+            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas A** (M30 A pleine haussière et M30 B pleine haussière) / RSI: Haussière. **ATTENTION : Pas d\'opportunité directe.** Attendez que le H1 de Trade clôture en Algo (M30A algo et M30B algo). Un **Buy Limit** est placé sur la mèche du bas de la bougie H1 de Trade ayant clôturé en Algo.'
         },
         // BUY 2: H2 pleine haussière + H1 (deuxième bougie de H2) algo + H1 Avant Trade 'C'
         {
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Buy - H2 PH + H1 Algo (2e) + H1 Av.Trade C',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de continuité de la hausse.',
-            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas C** / RSI: Haussière. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé directement sur la mèche du bas de la bougie Algo M30B de H1 d\'Avant Trade ayant clôturé.'
+            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas C** (M30 A pleine haussière et M30 B algo) / RSI: Haussière. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé directement sur la mèche du bas de la bougie Algo M30B de H1 d\'Avant Trade ayant clôturé.'
         },
         // BUY 3: H2 pleine haussière + H1 (deuxième bougie de H2) algo + H1 Avant Trade 'D'
         {
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Buy - H2 PH + H1 Algo (2e) + H1 Av.Trade D',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de continuité de la hausse.',
-            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas D** / RSI: Haussière. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé directement sur la mèche du bas de la bougie Algo M30B de H1 d\'Avant Trade ayant clôturé.'
+            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas D** (M30 A algo et M30 B algo) / RSI: Haussière. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé directement sur la mèche du bas de la bougie Algo M30B de H1 d\'Avant Trade ayant clôturé.'
         },
         // BUY 4: H2 pleine haussière + H1 (deuxième bougie de H2) algo + H1 Avant Trade 'E'
         {
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Buy - H2 PH + H1 Algo (2e) + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de continuité de la hausse.',
-            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas E** / RSI: Haussière. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé sur la mèche du bas de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
+            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas E** (M30 A algo et M30 B algo) / RSI: Haussière. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé sur la mèche du bas de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
         },
         // BUY 5: H2 clôture en algo + Dernière H1 algo + H1 Avant Trade 'E'
         {
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Buy - H2 Algo + Dernière H1 Algo + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de renversement haussier.',
-            detailedGuidance: 'H2: Algo Valide / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas E** / RSI: Survente. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé sur la mèche du bas de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
+            detailedGuidance: 'H2: Algo Valide / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas E** (M30 A algo et M30 B algo) / RSI: Survente. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé sur la mèche du bas de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
         },
         // BUY 6: H2 clôture en pleine haussière + Ses deux bougies H1 clôturent en algo + H1 Avant Trade 'E'
         {
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Buy - H2 PH + Deux H1 Algo + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de renversement haussier.',
-            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Les deux H1 sont Algo / **H1 AVANT TRADE: Cas E** / RSI: Survente. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé sur la mèche du bas de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
+            detailedGuidance: 'H2: Pleine Haussière / Comp. H2: Les deux H1 sont Algo / **H1 AVANT TRADE: Cas E** (M30 A algo et M30 B algo) / RSI: Survente. **Naissance directe d\'opportunité de trade.** Un **Buy Limit** est placé sur la mèche du bas de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
         },
 
         // --- SCENARIOS SELL ---
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade A',
             expectedH1Trade: 'H1 heure de trade clôture en Algo (M30A algo et M30B algo)',
             description: 'Opportunité de continuité de la baisse.',
-            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas A** / RSI: Baissière. **ATTENTION : Pas d\'opportunité directe.** Attendez que le H1 de Trade clôture en Algo (M30A algo et M30B algo). Un **Sell Limit** est placé sur la mèche du haut de la bougie H1 de Trade ayant clôturé en Algo.'
+            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas A** (M30 A pleine baissière et M30 B pleine baissière) / RSI: Baissière. **ATTENTION : Pas d\'opportunité directe.** Attendez que le H1 de Trade clôture en Algo (M30A algo et M30B algo). Un **Sell Limit** est placé sur la mèche du haut de la bougie H1 de Trade ayant clôturé en Algo.'
         },
         // SELL 2: H2 pleine baissière + H1 (deuxième bougie de H2) algo + H1 Avant Trade 'C'
         {
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade C',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de continuité de la baisse.',
-            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas C** / RSI: Baissière. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé directement sur la mèche du haut de la bougie Algo M30B de H1 d\'Avant Trade ayant clôturé.'
+            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas C** (M30 A pleine baissière et M30 B algo) / RSI: Baissière. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé directement sur la mèche du haut de la bougie Algo M30B de H1 d\'Avant Trade ayant clôturé.'
         },
         // SELL 3: H2 pleine baissière + H1 (deuxième bougie de H2) algo + H1 Avant Trade 'D'
         {
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade D',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de continuité de la baisse.',
-            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas D** / RSI: Baissière. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé directement sur la mèche du haut de la bougie Algo M30B de H1 d\'Avant Trade ayant clôturé.'
+            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas D** (M30 A algo et M30 B algo) / RSI: Baissière. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé directement sur la mèche du haut de la bougie Algo M30B de H1 d\'Avant Trade ayant clôturé.'
         },
         // SELL 4: H2 pleine baissière + H1 (deuxième bougie de H2) algo + H1 Avant Trade 'E'
         {
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de continuité de la baisse.',
-            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas E** / RSI: Baissière. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé sur la mèche du haut de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
+            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas E** (M30 A algo et M30 B algo) / RSI: Baissière. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé sur la mèche du haut de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
         },
         // SELL 5: H2 clôture en algo + Dernière H1 algo + H1 Avant Trade 'E'
         {
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Sell - H2 Algo + Dernière H1 Algo + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de renversement baissier.',
-            detailedGuidance: 'H2: Algo Valide / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas E** / RSI: Surachat. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé sur la mèche du haut de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
+            detailedGuidance: 'H2: Algo Valide / Comp. H2: Dernière H1 Algo / **H1 AVANT TRADE: Cas E** (M30 A algo et M30 B algo) / RSI: Surachat. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé sur la mèche du haut de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
         },
         // SELL 6: H2 clôture en pleine baissière + Ses deux bougies H1 clôturent en algo + H1 Avant Trade 'E'
         {
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Sell - H2 PB + Deux H1 Algo + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
             description: 'Opportunité de renversement baissier.',
-            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Les deux H1 sont Algo / **H1 AVANT TRADE: Cas E** / RSI: Surachat. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé sur la mèche du haut de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
+            detailedGuidance: 'H2: Pleine Baissière / Comp. H2: Les deux H1 sont Algo / **H1 AVANT TRADE: Cas E** (M30 A algo et M30 B algo) / RSI: Surachat. **Naissance directe d\'opportunité de trade.** Un **Sell Limit** est placé sur la mèche du haut de la bougie H1 Avant Heure de Trade ayant clôturé en Algo.'
         }
     ];
 
@@ -385,23 +385,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Aide pour rendre les valeurs plus lisibles pour les suggestions
+    // Aide pour rendre les valeurs plus lisibles pour les suggestions et descriptions des H1
     function getReadableValue(value) {
         switch (value) {
             case 'pleine-haussiere': return 'Pleine Haussière';
             case 'pleine-baissiere': return 'Pleine Baissière';
             case 'algo-valide': return 'Algo Valide';
+            case 'algo-invalide': return 'Algo Invalide'; // Ajouté si applicable dans le futur
+            case 'indecise': return 'Indécise'; // Ajouté si applicable dans le futur
             case 'h1-2-algo': return 'Dernière H1 est Algo';
             case 'h1-1-2-algo': return 'Les deux H1 sont Algo';
-            case 'autre': return 'Autre';
-            case 'A': return 'Cas A (H1 Pleine Baissière)';
-            case 'C': return 'Cas C (H1 Indécise)'; // Note: Updated description in HTML
-            case 'D': return 'Cas D (H1 Pleine Haussière)';
-            case 'E': return 'Cas E (H1 Longue Mèche/Corps)';
+            case 'autre': return 'Autre Composition';
+            case 'A': return 'Cas A (M30 A pleine haussière/baissière et M30 B pleine haussière/baissière)';
+            case 'C': return 'Cas C (M30 A pleine haussière/baissière et M30 B algo)';
+            case 'D': return 'Cas D (M30 A algo et M30 B algo)';
+            case 'E': return 'Cas E (M30 A algo et M30 B algo)';
             case 'haussiere': return 'Tendance Haussière';
             case 'baissiere': return 'Tendance Baissière';
             case 'surachat': return 'Surachat';
             case 'survente': return 'Survente';
+            case 'neutre': return 'Neutre'; // Ajouté si applicable dans le futur
             default: return value;
         }
     }
@@ -476,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
             result: tradeResult.toUpperCase(),
             comments: comments || '',
             // Sauvegarder l'heure de trade si elle était pertinente lors de l'analyse
-            tradeHourContext: currentAnalyyzedScenario.tradeHour || 'N/A' 
+            tradeHourContext: currentAnalyzedScenario.tradeHour || 'N/A' 
         };
 
         trades.push(newTrade);
