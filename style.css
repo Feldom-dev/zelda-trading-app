@@ -23,6 +23,7 @@ body {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Assurer que padding et border sont inclus dans la largeur/hauteur */
 }
 
 #login-screen h2 {
@@ -30,7 +31,7 @@ body {
     margin-bottom: 20px;
 }
 
-#login-input {
+#password-input { /* J'ai corrigé l'id ici, c'était #login-input avant */
     padding: 10px 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -49,6 +50,7 @@ body {
     font-size: 1em;
     transition: background-color 0.3s ease;
     width: 100%;
+    box-sizing: border-box;
 }
 
 #login-button:hover {
@@ -101,6 +103,7 @@ form select, form input[type="number"] {
     border-radius: 5px;
     font-size: 1em;
     background-color: #f8f9fa;
+    box-sizing: border-box; /* Important pour le responsive */
 }
 
 form button {
@@ -159,18 +162,25 @@ form button:hover {
     display: none;
 }
 
+/* Conteneur pour rendre les tableaux scrollables horizontalement sur petits écrans */
+.table-responsive {
+    overflow-x: auto; /* Permet le défilement horizontal si le contenu dépasse */
+    -webkit-overflow-scrolling: touch; /* Améliore le défilement sur iOS */
+}
 
 table {
-    width: 100%;
+    width: 100%; /* S'assure que le tableau prend la largeur disponible de son conteneur */
     border-collapse: collapse;
     margin-top: 20px;
     background-color: #fdfdfe;
+    min-width: 600px; /* Définir une largeur minimale pour éviter que le tableau ne soit trop écrasé */
 }
 
 table th, table td {
     border: 1px solid #dee2e6;
     padding: 12px;
     text-align: left;
+    white-space: nowrap; /* Empêche le texte de s'enrouler dans les cellules du tableau */
 }
 
 table th {
@@ -195,15 +205,60 @@ table tr:nth-child(even) {
     color: #007bff;
 }
 
-/* Rendre le formulaire et les sections plus responsives */
+/* MEDIA QUERIES pour la réactivité */
 @media (max-width: 768px) {
     body {
         padding: 10px;
     }
     #app-content {
         padding: 15px;
+        /* Supprime la max-width pour que l'application prenne toute la largeur disponible sur mobile */
+        max-width: 100%;
+    }
+    .form-section, .journal-section, .stats-section {
+        padding: 15px; /* Réduire le padding des sections sur mobile */
+    }
+    h1 {
+        font-size: 1.8em; /* Ajuster la taille du titre principal */
+    }
+    h2 {
+        font-size: 1.4em; /* Ajuster la taille des sous-titres */
     }
     form select, form input[type="number"], form button {
-        width: 100%;
+        width: 100%; /* S'assurer qu'ils prennent toute la largeur */
+        padding: 10px; /* Ajuster le padding */
+        font-size: 0.95em; /* Légèrement réduire la taille de police */
     }
+    .result-section {
+        font-size: 1em; /* Ajuster la taille de police du résultat */
+        padding: 15px;
+    }
+    table {
+        min-width: unset; /* Supprime la largeur minimale du tableau pour qu'il s'adapte au défilement */
+        width: 100%; /* S'assure qu'il prend 100% de la largeur du conteneur scrollable */
+    }
+    table th, table td {
+        padding: 8px; /* Réduire le padding des cellules */
+        font-size: 0.8em; /* Réduire la taille de police des cellules */
+    }
+    .stats-section p {
+        font-size: 1em; /* Ajuster la taille des statistiques globales */
+    }
+}
+
+/* Pour les très petits écrans (smartphones étroits) */
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    #app-content {
+        padding: 10px;
+    }
+    h1 {
+        font-size: 1.6em;
+    }
+    h2 {
+        font-size: 1.2em;
+    }
+    /* Les styles de tableau restent gérés par .table-responsive */
 }

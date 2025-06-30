@@ -138,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'pleine-baissiere',
                 'h2Composition': 'h1-2-algo', // H1 (la deuxième bougie de H2) algo
                 'h1ConfigBefore': 'A', // h1 = pleine baissière (M30 A pleine baissière et M30 B pleine baissière)
-                'rsiStatus': 'baissiere' // RSI baissière pour ce cas
             },
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade A',
             expectedH1Trade: 'H1 heure de trade clôture en Algo (M30A algo et M30B algo)',
@@ -153,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'pleine-baissiere',
                 'h2Composition': 'h1-2-algo', // H1 (la deuxième bougie de H2) algo
                 'h1ConfigBefore': 'C', // h1 = pleine baissière (M30 A pleine baissière et M30 B algo)
-                'rsiStatus': 'baissiere' // RSI baissière
             },
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade C',
             expectedH1Trade: 'Naissance directe d\'opportunité',
@@ -168,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'pleine-baissiere',
                 'h2Composition': 'h1-2-algo', // H1 (la deuxième bougie de H2) algo
                 'h1ConfigBefore': 'D', // h1 = pleine baissière (M30 A algo et M30 B algo)
-                'rsiStatus': 'baissiere' // RSI baissière
             },
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade D',
             expectedH1Trade: 'Naissance directe d\'opportunité',
@@ -183,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'pleine-baissiere',
                 'h2Composition': 'h1-2-algo', // H1 (la deuxième bougie de H2) algo
                 'h1ConfigBefore': 'E', // h1 = algo (M30 A algo et M30 B algo)
-                'rsiStatus': 'baissiere' // RSI baissière
             },
             name: 'Sell - H2 PB + H1 Algo (2e) + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
@@ -198,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'algo-valide', // h2 clôture en algo
                 'h2Composition': 'h1-2-algo', // sa dernière bougie h1 soit aussi une bougie algo
                 'h1ConfigBefore': 'E', // h1 = algo (M30 A algo et M30 B algo)
-                'rsiStatus': 'surachat' // RSI en surachat
             },
             name: 'Sell - H2 Algo + Dernière H1 Algo + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
@@ -213,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 'h2Shape': 'pleine-baissiere',
                 'h2Composition': 'h1-1-2-algo', // ses deux bougies h1 clôturent en algo
                 'h1ConfigBefore': 'E', // h1 = algo (M30 A algo et M30 B algo)
-                'rsiStatus': 'surachat' // RSI en surachat
             },
             name: 'Sell - H2 PB + Deux H1 Algo + H1 Av.Trade E',
             expectedH1Trade: 'Naissance directe d\'opportunité',
@@ -262,8 +256,10 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let [name, value] of formData.entries()) {
             if (name === 'tradeHour') {
                 tradeHour = value; // Stocke l'heure séparément
-            }
-            if (!value) {
+                if (value === "") { // Vérifie si l'heure est sélectionnée (si ce n'est pas optionnel)
+                    allFieldsSelected = false; // Désactivez si l'heure est obligatoire et non sélectionnée
+                }
+            } else if (value === "") { // Vérifie les autres champs obligatoires
                 allFieldsSelected = false;
                 break;
             }
@@ -479,7 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
             result: tradeResult.toUpperCase(),
             comments: comments || '',
             // Sauvegarder l'heure de trade si elle était pertinente lors de l'analyse
-            tradeHourContext: currentAnalyzedScenario.tradeHour || 'N/A' 
+            tradeHourContext: currentAnalyyzedScenario.tradeHour || 'N/A' 
         };
 
         trades.push(newTrade);
